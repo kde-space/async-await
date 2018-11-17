@@ -1,3 +1,7 @@
+/**
+ * 複数イベントが完了後に、次の処理をするサンプル
+ */
+
 // カスタムイベント作成
 const event1 = new Event('ev:event1');
 const event2 = new Event('ev:event2');
