@@ -3,7 +3,7 @@
  * ↑のサンプルをAsync Functionを使わずに通常のPromiseで実装した例
  */
  
-class  {
+class AsyncStorage {
   constructor() {
     this.dataMap = new Map();
   }
