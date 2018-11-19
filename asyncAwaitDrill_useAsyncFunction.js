@@ -4,39 +4,40 @@
  * fetchをラップした関数
  * @param {String} path 
  */
-function fetchData(path) {
-  return new Promise((resolve, reject) => {
-    fetch(path)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        reject(new Error(`エラー発生! ${res.statusText}`));
-      })
-      .then(resolve)
-      .catch(reject);
-  });
+async function fetchData(path) {
+  try {
+    const res = await fetch(path);
+    if (res.ok) {
+      const json = await res.json();
+      return json;
+    }
+    throw new Error(`エラー！ ${res.statusText}`);
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * 一覧情報取得
  * @param {String} path 
  */
-function fetchAllList() {
-  return fetchData('https://codegrid-drill-06.netlify.com/list.json');
+async function fetchAllList() {
+  const allList = await fetchData('https://codegrid-drill-06.netlify.com/list.json');
+  return allList;
 }
 
 /**
  * 一覧情報から各詳細情報取得
  * @param {Array} list 
  */
-function fetchDetails(list) {
-  return new Promise((resolve, reject) => {
+async function fetchDetails(list) {
+  try {
     const fetchList = list.map(item => fetchDetail(item.id));
-    Promise.all(fetchList)
-      .then(resolve)
-      .catch(reject);
-  });
+    const result = await Promise.all(fetchList);
+    return result;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -61,11 +62,14 @@ function formatThenOutput(detailList) {
   console.log(result);
 }
 
-function main() {
-  fetchAllList()
-    .then(fetchDetails)
-    .then(formatThenOutput)
-    .catch(console.error);
+async function main() {
+  try {
+    const allList = await fetchAllList();
+    const result = await fetchDetails(allList);
+    formatThenOutput(result);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 main();
