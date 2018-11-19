@@ -55,6 +55,7 @@ function fetchDetail(id) {
  */
 function formatThenOutput(detailList) {
   const result = detailList.reduce((prev, current, index) => {
+    // 最後以外、末尾に改行いれる
     return prev + `${current.name}: ${current.weight}${index === detailList.length - 1 ? '' : '\n'}`;
   }, '');
   console.log(result);
